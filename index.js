@@ -15,14 +15,18 @@ exports.handler = async (event, context) => {
 
   let params = {
     TableName: 'track-map',
-    Key: {
-      deviceId: 'NHD184JH',
+    KeyConditionExpression: '#deviceId = :deviceId',
+    ExpressionAttributeNames: {
+      '#deviceId': 'deviceId',
+    },
+    ExpressionAttributeValues: {
+      ':deviceId': 'NHD184JH',
     },
   };
 
   try {
     console.log(params);
-    body = await dynamo.get(params).promise();
+    body = await dynamo.query(params).promise();
   } catch (err) {
     console.error(err);
     statusCode = '400';
